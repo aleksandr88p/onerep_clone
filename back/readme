@@ -1,0 +1,10 @@
+site:nytimes.com "Дональд Трамп" AND "выборы" location:США
+
+
+site:findpeoplesearch.com "Billie Bones" location:USA
+
+
+site:example.com OR site:example.org "Billie Bones" location:USA
+
+
+chromedriver.storage.googleapis.com/index.html
