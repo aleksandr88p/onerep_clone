@@ -2,7 +2,15 @@ import json
 
 import requests
 
-def findpeoplesearch(name, state='null', age='null'):
+def findpeoplesearch(first_name, last_name, state='null', age='null'):
+    name = f"{first_name} {last_name}"
+    '''
+
+    :param name: передается в одной строке
+    :param state:
+    :param age:
+    :return:
+    '''
     cookies = {
         'X-Mapping-fjhppofk': '5F3B4AF9EBCDEF03FC48835BCC613FF5',
         'PHPSESSID': 'g9d8uem67g1lgicksl9nsurlt5',
@@ -59,7 +67,7 @@ def findpeoplesearch(name, state='null', age='null'):
     # content = f1.read()
     content = response.text
 
-    soup = BeautifulSoup(content, 'lxml')
+    soup = BeautifulSoup(content, 'html.parser')
 
     all_items = soup.find_all(class_='panel panel-default')
 
@@ -84,19 +92,38 @@ def findpeoplesearch(name, state='null', age='null'):
     здесь сохраяняются все и ключи у словарей это имена и возраст    
     """
 
-    for item in all_items:
+    # for item in all_items:
+    #     try:
+    #         head_name = item.find(class_='head_name').text.replace('\n', '').replace('\t', '').split(' - ')
+    #         name = head_name[0]
+    #         age = head_name[1]
+    #         lived_raw = item.find('h6').text.split()
+    #         lived = f"{lived_raw[0]} {lived_raw[1]}"
+    #         mentions[f"{name} {age}"] = {'name': name, 'age': age, 'lived': lived}
+    #     except Exception as ex:
+    #         print(f'error in findpeoplesearch {ex}')
+    #         continue
+
+    for num, item in enumerate(all_items):
         try:
             head_name = item.find(class_='head_name').text.replace('\n', '').replace('\t', '').split(' - ')
             name = head_name[0]
             age = head_name[1]
-            lived_raw = item.find('h6').text.split()
-            lived = f"{lived_raw[0]} {lived_raw[1]}"
-            mentions[f"{name} {age}"] = {'name': name, 'age': age, 'lived': lived}
+            lived_raw = item.find('h6')
+            # print(lived_raw)
+            all_a = lived_raw.find_all('a')
+            lived = []
+            for a in all_a:
+                # print(a)
+                place = a.text
+                if place != 'View More':
+                    # place = place.replace('\n','').replace('\t', '')
+                    lived.append(place.strip())
+
+            mentions[num + 1] = {'name': name, 'age': age, 'lived': lived}
         except Exception as ex:
             print(f'error in findpeoplesearch {ex}')
             continue
-
-
 
     # f1.close()
 
@@ -104,5 +131,5 @@ def findpeoplesearch(name, state='null', age='null'):
 
 
 
-print(json.dumps(findpeoplesearch('Billie Bones'), indent=4))
+print(json.dumps(findpeoplesearch('will', 'smitt'), indent=4))
 # print(json.dumps(findpeoplesearch('John Doe'), indent=4))
