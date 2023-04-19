@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 import time
-
+import base64
 s = Service(executable_path='/home/aleksandr/01_работа/index/03_23/onerep_clone/back/find_links/chromedriver_linux64/chromedriver')
 options = webdriver.ChromeOptions()
 """
@@ -19,8 +19,15 @@ PROXY_USER = '4UsLX7'  # Имя пользователя для аутентиф
 PROXY_PASS = 'tCDbq9'  # Пароль для аутентификации на прокси-сервере
 
 
+
 # options.add_argument(f'--proxy-server=http://{PROXY_USER}:{PROXY_PASS}@{PROXY_HOST}:{PROXY_PORT}')
 options.add_argument(f"--proxy-server=http://{h1}")
+# options.add_argument()
+# if PROXY_USER and PROXY_PASS:
+#     credentials = f"{PROXY_USER}:{PROXY_PASS}"
+#     # encoded_credentials = base64.b64encode(credentials.encode('ascii')).decode('utf-8')
+#     options.add_argument(f'--proxy-auth={credentials}')
+
 
 driver = webdriver.Chrome(service=s, options=options)
 
@@ -42,8 +49,8 @@ driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument',{
 
 try:
     driver.maximize_window()
-    driver.get('https://www.google.com/')
-    time.sleep(1000)
+    driver.get('https://www.fastpeoplesearch.com/name/john-doe_NY')
+    time.sleep(999999)
 except Exception as ex:
     print(ex)
 finally:

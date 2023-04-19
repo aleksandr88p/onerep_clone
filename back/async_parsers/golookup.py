@@ -1,7 +1,10 @@
 import requests
-from bs4 import BeautifulSoup
 
-def golookup(*args, **kwargs):
+import aiohttp
+from bs4 import BeautifulSoup
+import asyncio
+import json
+async def golookup(*args, **kwargs):
     '''
 
     :param args:
@@ -14,7 +17,7 @@ def golookup(*args, **kwargs):
     city = kwargs["city"]
     state = kwargs["state"]
 
-
+    # без куки ничего не возвращает вообще
     cookies = {
         'laravel_session': 'eyJpdiI6IjUxTWYyVTFBTWhhS0w5b0laRk1NdXc9PSIsInZhbHVlIjoiVEpsMkhBeFVnaGZqT21uNjBubExFYk9PV3Q0WnJkRjdPS3ZSbmoxVFRGeldFWG82Qm1wSmE0MFlJOWY0ajl6UGN0aklWUWRKZXd2cnQ1UlU1SXNmU0lrRHlvKzdyNU5wdS8zTUZHaGowdkxacUVrYW05KzJ1bCtRQkV2RkpYL2YiLCJtYWMiOiI5ZGU0M2Y2NzZlNTcxMzNhN2FhMzQzOTcyMGNlMjE1NmEwY2ZjMzA1NjJiMTllMzlkNGM0MGJmMWFjOWRiZjI5IiwidGFnIjoiIn0%3D',
         '_gcl_au': '1.1.1975623024.1679164334',
@@ -28,7 +31,7 @@ def golookup(*args, **kwargs):
     headers = {
         'authority': 'golookup.com',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'ru',
+        'accept-language': 'en-US,en',
         'cache-control': 'max-age=0',
         'content-type': 'application/x-www-form-urlencoded',
         # 'cookie': 'laravel_session=eyJpdiI6IjUxTWYyVTFBTWhhS0w5b0laRk1NdXc9PSIsInZhbHVlIjoiVEpsMkhBeFVnaGZqT21uNjBubExFYk9PV3Q0WnJkRjdPS3ZSbmoxVFRGeldFWG82Qm1wSmE0MFlJOWY0ajl6UGN0aklWUWRKZXd2cnQ1UlU1SXNmU0lrRHlvKzdyNU5wdS8zTUZHaGowdkxacUVrYW05KzJ1bCtRQkV2RkpYL2YiLCJtYWMiOiI5ZGU0M2Y2NzZlNTcxMzNhN2FhMzQzOTcyMGNlMjE1NmEwY2ZjMzA1NjJiMTllMzlkNGM0MGJmMWFjOWRiZjI5IiwidGFnIjoiIn0%3D; _gcl_au=1.1.1975623024.1679164334; _gid=GA1.2.974212858.1679164334; _gat_gtag_UA_68116049_1=1; _ga_Q6QGWFP4LR=GS1.1.1679164333.1.0.1679164333.60.0.0; _ga=GA1.1.2089458694.1679164334; __ssid=1c0688dfee9e58304de788bf0069c62',
@@ -54,58 +57,51 @@ def golookup(*args, **kwargs):
         'state': f'{state}',
     }
 
-    # первый реквест что бы отправить запрос и найти ссылку для редиректа
-    response = requests.post(
-        'https://golookup.com/lander/people/default/processPeopleSearch',
-        cookies=cookies,
-        headers=headers,
-        data=data,
-    )
-
-    soup = BeautifulSoup(response.text, 'html.parser')
-    try:
-        response2 = requests.get(soup.find('lander-people-default-loading')['redirect-url'], cookies=cookies, headers=headers)
-
-        # with open('result.html', 'a') as f:
-        #     f.write(response2.text)
-        # f1 = open('result.html', 'r')
-        # content = f1.read()
-
-        content = response2.text
-        soup2 = BeautifulSoup(content, 'html.parser')
-
-        all_items = soup2.find_all('div', attrs={"class": "process-record"})
-        mentions = {}
-        for num_, item in enumerate(all_items):
-            num = num_ + 1
-            name = item.find('div', attrs={'class': 'name'}).text.strip()
-            age = item.find('div', attrs={'class': 'age'}).text.strip().replace('years old', '').strip()
-            lived = []
-            locations = item.find('ul')
+    async with aiohttp.ClientSession(cookies=cookies, headers=headers) as session:
+        # первый реквест что бы отправить запрос и найти ссылку для редиректа
+        async with session.post('https://golookup.com/lander/people/default/processPeopleSearch', data=data) as response:
+            content = await response.text()
+            soup = BeautifulSoup(content, 'html.parser')
             try:
-                for location in locations:
-                    loca = location.text.strip().split(';  ')
-                    if len(loca) > 1:
-                        loc = loca[1].split(' *')[0]
-                        lived.append(loc)
-            except:
-                print('bad loc')
+                async with session.get(soup.find('lander-people-default-loading')['redirect-url']) as response2:
+                    content = await response2.text()
+                    soup2 = BeautifulSoup(content, 'html.parser')
 
-            mentions[num] = {'name': name, 'age': age, 'lived': lived}
+                    all_items = soup2.find_all('div', attrs={"class": "process-record"})
+                    mentions = []
+                    for num_, item in enumerate(all_items):
+                        num = num_ + 1
+                        name = item.find('div', attrs={'class': 'name'}).text.strip()
+                        age = item.find('div', attrs={'class': 'age'}).text.strip().replace('years old', '').strip()
+                        lived = []
+                        locations = item.find('ul')
+                        try:
+                            for location in locations:
+                                loca = location.text.strip().split(';  ')
+                                if len(loca) > 1:
+                                    loc = loca[1].split(' *')[0]
+                                    lived.append(loc)
+                        except:
+                            print('bad loc')
+                        mentions.append({'name': name, 'age': age, 'lived': lived})
+                    return mentions
 
-        # f1.close()
-        return mentions
-
-    except Exception as ex:
-        print('bad redirect\n{ex}')
+            except Exception as ex:
+                print(f'bad redirect\n{ex}')
 
 
 #
 # print('старт')
-# d = golookup(first_name='billie', last_name='bones', middle_name='j', state='ID', city='eagle')
 #
-# import json
 #
-# print(json.dumps(d, indent=4))
+#
+#
+# async def main():
+#     mentions = await golookup(first_name='John', middle_name='Doe', last_name='Smith', city='Los Angeles', state='CA')
+#     print(json.dumps(mentions, indent=4))
+#
+# asyncio.run(main())
+#
+#
 #
 # print("finish")

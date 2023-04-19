@@ -8,3 +8,8 @@ site:example.com OR site:example.org "Billie Bones" location:USA
 
 
 chromedriver.storage.googleapis.com/index.html
+
+
+
+если у меня будет около 30 функций. каждая будет парсить разный сайт. Функции будут написаны с помощью playwright библиотеки
+Нужно ли их делать ассинхронными

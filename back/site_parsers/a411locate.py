@@ -1,8 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 
-def a411locate(name, surename):
-
+def a411locate(*args, **kwargs):
+    first_name = kwargs["first_name"]
+    middle_name = kwargs["middle_name"]
+    last_name = kwargs["last_name"]
+    city = kwargs["city"]
+    state = kwargs["state"]
 
     cookies = {
         '_pbjs_userid_consent_data': '3524755945110770',
@@ -29,7 +33,7 @@ def a411locate(name, surename):
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
     }
 
-    response = requests.get(f'https://www.411locate.com/people-search/full/{name}-{surename}', cookies=cookies, headers=headers)
+    response = requests.get(f'https://www.411locate.com/people-search/full/{first_name}-{last_name}', cookies=cookies, headers=headers)
 
     # with open('result.html', 'a') as f:
     #     f.write(response.text)
@@ -46,7 +50,7 @@ def a411locate(name, surename):
     for num_, item in enumerate(all_items):
         try:
 
-            name = item.find('div', attrs={'class': 'flex justify-between px-2 sm:px-4 py-3 md:px-10 md:py-6'}).find('span').text
+            first_name = item.find('div', attrs={'class': 'flex justify-between px-2 sm:px-4 py-3 md:px-10 md:py-6'}).find('span').text
             items_needed = item.find_all('div', attrs={"class": 'flex flex-col items-start sm:flex-row gap-x-3 gap-y-1'})
             age = items_needed[1].text
             lived = [items_needed[0].text]
@@ -57,7 +61,7 @@ def a411locate(name, surename):
             except:
                 continue
 
-            mentions[num_+1] = {'name': name, 'age': age, 'lived': all_places}
+            mentions[num_+1] = {'name': first_name, 'age': age, 'lived': all_places}
 
 
 
@@ -69,8 +73,8 @@ def a411locate(name, surename):
 
 
 
-import json
-
-
-d = a411locate('john', 'doe')
-print(json.dumps(d, indent=4))
+# import json
+#
+#
+# d = a411locate(first_name='billie', last_name='bones', middle_name='j', state='ID', city='eagle')
+# print(json.dumps(d, indent=4))

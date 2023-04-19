@@ -2,7 +2,12 @@ import json
 
 import requests
 
-def findpeoplesearch(first_name, last_name, state='null', age='null'):
+def findpeoplesearch(*args, **kwargs):
+    first_name = kwargs["first_name"]
+    middle_name = kwargs["middle_name"]
+    last_name = kwargs["last_name"]
+    city = kwargs["city"]
+    state = kwargs["state"]
     name = f"{first_name} {last_name}"
     '''
 
@@ -49,7 +54,7 @@ def findpeoplesearch(first_name, last_name, state='null', age='null'):
 
     # name = 'Billie Bones'
     data = {
-        'formData': f'&full_name={name}&age={age}&state={state}&email=null&address=null&city=null&zip=null&akas=null&phone=null&month=null&day=null&year=null&url_timestamp=16787510919391',
+        'formData': f'&full_name={name}&age=null&state={state}&email=null&address=null&city=null&zip=null&akas=null&phone=null&month=null&day=null&year=null&url_timestamp=16787510919391',
     }
 
     response = requests.post('https://www.findpeoplesearch.com/search_ajax.php', cookies=cookies, headers=headers, data=data)
@@ -58,9 +63,7 @@ def findpeoplesearch(first_name, last_name, state='null', age='null'):
     from bs4 import BeautifulSoup
 
 
-    """
-    здесь я тестил и поэтому записывал в файл
-    """
+
     # with open('result.html', 'a') as f:
     #     f.write(response.text)
     # f1 = open('result.html', 'r')
@@ -72,37 +75,7 @@ def findpeoplesearch(first_name, last_name, state='null', age='null'):
     all_items = soup.find_all(class_='panel panel-default')
 
     mentions = {}
-    """
-    есть несколько людей с одинаковыми именами и фамилиями здесь сохраяняется только один и ключи у словарей это имена
-    """
 
-    # for item in all_items:
-    #     try:
-    #         head_name = item.find(class_='head_name').text.split('- ')[0].replace('\xa0', '')
-    #     except:
-    #         head_name = item.find(class_='head_name').text
-    #         head_name = head_name.replace('\xa0', '').replace('\n', '').replace('\t', '')
-    #     age = item.find(class_='head_dob').text
-    #     lived_raw = item.find('h6').text.split()
-    #     lived = f"{lived_raw[0]} {lived_raw[1]}"
-    #     mentions[head_name] = {'age': age, 'lived': lived}
-
-
-    """
-    здесь сохраяняются все и ключи у словарей это имена и возраст    
-    """
-
-    # for item in all_items:
-    #     try:
-    #         head_name = item.find(class_='head_name').text.replace('\n', '').replace('\t', '').split(' - ')
-    #         name = head_name[0]
-    #         age = head_name[1]
-    #         lived_raw = item.find('h6').text.split()
-    #         lived = f"{lived_raw[0]} {lived_raw[1]}"
-    #         mentions[f"{name} {age}"] = {'name': name, 'age': age, 'lived': lived}
-    #     except Exception as ex:
-    #         print(f'error in findpeoplesearch {ex}')
-    #         continue
 
     for num, item in enumerate(all_items):
         try:
@@ -130,6 +103,6 @@ def findpeoplesearch(first_name, last_name, state='null', age='null'):
     return mentions
 
 
-
-print(json.dumps(findpeoplesearch('will', 'smitt'), indent=4))
-# print(json.dumps(findpeoplesearch('John Doe'), indent=4))
+# d = findpeoplesearch(first_name='billie', last_name='bones', middle_name='j', state='ID', city='eagle')
+#
+# print(json.dumps(d, indent=4))

@@ -6,11 +6,10 @@ usatrace.com/people-search/Cahek-Pyl/New-York-NM/ нету результато�
 https://www.usatrace.com/people-search/billie-jo-bones/New-York-NY нету результатов
 
 """
-
-import requests
-
-
-def usatrace(*args, **kwargs):
+import aiohttp
+from bs4 import BeautifulSoup
+import json
+async def usatrace(*args, **kwargs):
     first_name = kwargs["first_name"]
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
@@ -25,11 +24,10 @@ def usatrace(*args, **kwargs):
     headers = {
         'authority': 'www.usatrace.com',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6',
+        'accept-language': 'en-US,en',
         'cache-control': 'max-age=0',
         # 'cookie': 'PHPSESSID=eae732f95a69de1cc892cef56d54c7ea; _ga=GA1.2.1179357062.1678837740; _gid=GA1.2.1465235612.1678837740',
         'dnt': '1',
-        'if-modified-since': 'Wed, 15 Mar 2023 20:39:04 GMT',
         'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Linux"',
@@ -41,60 +39,50 @@ def usatrace(*args, **kwargs):
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
     }
 
-    from bs4 import BeautifulSoup
-
     if not city:
         url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{state}"
     else:
         url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{city}-{state}"
 
+    async with aiohttp.ClientSession(cookies=cookies, headers=headers) as session:
+        async with session.get(url) as response:
+            content = await response.text()
 
-    response = requests.get(url, cookies=cookies, headers=headers)
+            soup = BeautifulSoup(content, 'lxml')
+            table_res = soup.find('table', attrs={'id': 'usatrace-result-table'})
 
+            if not table_res:
+                return None  # нету результатов
 
+            all_tr = table_res.find_all('tr')
 
-    # with open('result.html', 'a') as f:
-    #     f.write(response.text)
-    # f1 = open('result.html')
-    # content = f1.read()
+            if len(all_tr) < 2:
+                return None  # что то не так
 
-    content = response.text
-    soup = BeautifulSoup(content, 'lxml')
-    table_res = soup.find('table', attrs={'id': 'usatrace-result-table'})
-    if not table_res:
-        return None # нету результатов
+            mentions = []
 
-    all_tr = table_res.find_all('tr')
-    if len(all_tr) < 2:
-        return None # что то не так
+            for tr in all_tr[1::]:  # так как первый tr это шапка таблицы
+                all_td = tr.find_all('td')
+                num = all_td[0].text
+                name = all_td[1].text
+                age = all_td[2].text
+                # lived = all_td[3].text
+                lived = []
+                all_br = all_td[3].find_all('br')
 
-    mentions = {}
-    for tr in all_tr[1::]: # так как первый tr это шапка таблицы
-        all_td = tr.find_all('td')
-        num = all_td[0].text
-        name = all_td[1].text
-        age = all_td[2].text
-        # lived = all_td[3].text
-        lived = []
-        all_br = all_td[3].find_all('br')
+                for br in all_br:
+                    place = br.previous_sibling.strip()
+                    lived.append(place)
 
-        for br in all_br:
-            place = br.previous_sibling.strip()
-            lived.append(place)
-        mentions[num] = {'name': name, 'age': age, 'lived': lived}
+                mentions.append({'name': name, 'age': age, 'lived': lived})
 
+            return mentions
 
-
-    # f1.close()
-    return mentions
-
-
-
-
-
-
-import json
-# d = usatrace(first_name='billie', last_name='bones', middle_name='', state='ID', city='eagle')
-# d = usatrace(first_name='billie', last_name='bones', middle_name='', state='', city='')
 #
+# import asyncio
+# async def main():
+#     mentions = await usatrace(first_name='billie', last_name='bones', middle_name='', state='ID', city='')
+#     return mentions
+#
+# d = asyncio.run(main())
 # print(json.dumps(d, indent=4))
