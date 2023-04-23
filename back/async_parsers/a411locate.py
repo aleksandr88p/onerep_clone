@@ -68,8 +68,8 @@ async def a411locate(*args, **kwargs):
 
 
 #
-async def main():
-    mentions = await a411locate(first_name='John', middle_name='Doe', last_name='Smith', city='Los Angeles', state='CA')
-    print(mentions)
-
-asyncio.run(main())
+# async def main():
+#     mentions = await a411locate(first_name='John', middle_name='', last_name='Smith', city='Los Angeles', state='CA')
+#     print(mentions)
+#
+# asyncio.run(main())
