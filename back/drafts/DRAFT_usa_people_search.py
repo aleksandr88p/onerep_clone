@@ -27,10 +27,10 @@ async def main():
         await stealth_async(context)
         page = await context.new_page()
         await page.set_extra_http_headers(headers)
-        await page.goto("https://www.google.com/")
-        # await page.goto('https://www.usa-people-search.com/name/billie-bones/NY')
+        # await page.goto("https://www.google.com/")
+        await page.goto('https://www.usa-people-search.com/name/billie-bones/new-york')
         # await page.goto('https://www.peoplesearchnow.com/person/john-smith_new-york_ny')
         await asyncio.sleep(1200000)  # пауза на 2 минуты
         await browser.close()
 
-# asyncio.run(main())
+asyncio.run(main())

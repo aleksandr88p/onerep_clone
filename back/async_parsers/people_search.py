@@ -67,7 +67,7 @@ async def people_search(*args, **kwargs):
 
                     mentions.append({'name': name, 'age': age, 'lived': location})
                 except:
-                    print('error in item')
+                    print('error in item n people_search')
 
             return mentions
 

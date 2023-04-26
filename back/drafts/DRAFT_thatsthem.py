@@ -42,21 +42,22 @@ async def thath_them(*args, **kwargs):
     proxy_url = random.choice(proxy_list)
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False, proxy={
-            "server": f"{proxy_url}",
-            "username": "",
-            "password": ""
-        })
+        browser = await p.chromium.launch(headless=False)
+        # browser = await p.chromium.launch(headless=False, proxy={
+        #     "server": f"{proxy_url}",
+        #     "username": "",
+        #     "password": ""
+        # })
         context = await browser.new_context()
         page = await context.new_page()
         await page.set_extra_http_headers(headers)
         await page.goto(url)
         content = await page.content()
-        with open('ththsThem.html', 'a') as f:
-            f.write(content)
-        print(content)
+        # with open('ththsThem.html', 'a') as f:
+        #     f.write(content)
 
-        await asyncio.sleep(120)
+
+        await asyncio.sleep(1200000000)
 
         await browser.close()
 

@@ -9,7 +9,7 @@ async def radaris(*args, **kwargs):
     first_name = kwargs["first_name"]
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
-    city = kwargs["city"]
+    city = kwargs["city"].replace(' ', '+')
     if kwargs['state']:
         state = states_dict[kwargs["state"]]
     else:
@@ -65,7 +65,7 @@ async def radaris(*args, **kwargs):
                     age = age_elem.text.strip()
                 else:
                     age = ""
-                lived_elems = item.find_all('dd', class_='nowrap')
+                lived_elems = item.find_all('div', attrs={'class':'mb-12 teaser-card-item-wrap'})[-1].find_all('dd', class_='nowrap')
                 if lived_elems:
                     lived = [elem.text.strip() for elem in lived_elems]
                 else:
@@ -81,10 +81,10 @@ async def radaris(*args, **kwargs):
     return mentions
 
 
-# import asyncio
+import asyncio
 # #
 # #
 # import json
 # #
-# d = asyncio.run(radaris(first_name="billie", middle_name="", last_name="bones", state="AK", city="Cantwell"))
+# d = asyncio.run(radaris(first_name="john", middle_name="", last_name="smith", state="NY", city="new york"))
 # print(json.dumps(d, indent=4))

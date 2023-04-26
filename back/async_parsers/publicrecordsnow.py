@@ -12,7 +12,7 @@ async def publicrecordsnow(*args, **kwargs):
     first_name = kwargs["first_name"]
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
-    city = kwargs["city"]
+    city = kwargs["city"].replace(' ', '%20')
     state = kwargs["state"]
     cookies = {
         '_gcl_au': '1.1.1114480529.1678919287',

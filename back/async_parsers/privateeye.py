@@ -10,7 +10,7 @@ async def privateeye(*args, **kwargs):
     first_name = kwargs["first_name"]
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
-    city = kwargs["city"]
+    city = kwargs["city"].replace(' ', '%20')
     state = kwargs["state"]
     cookies = {
         'session': 'eyJkZXZpY2UiOm51bGwsIm5ldHdvcmsiOm51bGwsInB1Ymxpc2hlciI6IlVOS05PV04ifQ.ZBWNpg.wcMekd7dg7SjsRSi7jBI0g_o8sY',
@@ -80,10 +80,10 @@ async def privateeye(*args, **kwargs):
     return mentions
 
 #
-# import asyncio
-#
+import asyncio
+
 # async def main():
-#     mentions = await privateeye(first_name='billie', last_name='bones', middle_name='j', state='ID', city='eagle')
+#     mentions = await privateeye(first_name='billie', last_name='bones', middle_name='j', state='NY', city='new york')
 #     print(json.dumps(mentions, indent=4))
 #
 # asyncio.run(main())

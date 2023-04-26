@@ -78,7 +78,7 @@ async def propeoplesearch(*args, **kwargs):
 
 
 # async def main():
-#     mentions = await propeoplesearch(first_name='alex', last_name='popov', middle_name='', state='', city='')
+#     mentions = await propeoplesearch(first_name='alex', last_name='popov', middle_name='', state='NY', city='new york')
 #     return mentions
 #
 # d = asyncio.run(main())

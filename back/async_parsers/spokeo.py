@@ -14,7 +14,7 @@ async def spokeo(*args, **kwargs):
     first_name = kwargs["first_name"]
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
-    city = kwargs["city"]
+    city = kwargs["city"].replace(' ', '-')
     state = kwargs["state"]
     if state:
         if city:
@@ -23,7 +23,7 @@ async def spokeo(*args, **kwargs):
             url = f"https://www.spokeo.com/{first_name}-{last_name}/{state}"
     else:
         url = f"https://www.spokeo.com/{first_name}-{last_name}"
-    # print(url)
+    print(url)
 
     cookies = {
         '_sp_ses.6a20': '*',
@@ -101,7 +101,7 @@ async def spokeo(*args, **kwargs):
 
 # import asyncio
 # async def main():
-#     mentions = await spokeo(first_name='billie', last_name='bones', middle_name='', state='', city='')
+#     mentions = await spokeo(first_name='john', last_name='smith', middle_name='', state='NY', city='new york')
 #     return mentions
 #
 # d = asyncio.run(main())

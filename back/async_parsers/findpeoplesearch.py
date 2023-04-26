@@ -35,7 +35,7 @@ async def findpeoplesearch(*args, **kwargs):
     }
 
     data = {
-        'formData': f'&full_name={name}&age=null&state={state}&email=null&address=null&city=null&zip=null&akas=null&phone=null&month=null&day=null&year=null&url_timestamp=16787510919391',
+        'formData': f'&full_name={name}&age=null&state={state}&email=null&address=null&city={city}&zip=null&akas=null&phone=null&month=null&day=null&year=null&url_timestamp=16787510919391',
     }
 
     async with aiohttp.ClientSession(cookies=cookies, headers=headers) as session:
@@ -69,8 +69,8 @@ async def findpeoplesearch(*args, **kwargs):
 
             return mentions
 
-async def main():
-    mentions = await findpeoplesearch(first_name='John', middle_name='Doe', last_name='Smith', city='Los Angeles', state='CA')
-    print(mentions)
-
-asyncio.run(main())
+# async def main():
+#     mentions = await findpeoplesearch(first_name='John', middle_name='Doe', last_name='Smith', city='Los Angeles', state='CA')
+#     print(mentions)
+#
+# asyncio.run(main())

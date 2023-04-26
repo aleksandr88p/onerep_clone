@@ -16,8 +16,8 @@ async def search_people_free(*args, **kwargs):
         # Запуск браузера с указанием прокси
         browser = await p.chromium.launch(headless=True, proxy={
             "server": "http://196.17.66.143:8000",
-            "username": "",
-            "password": ""
+            "username": "2xxh1Q",
+            "password": "NCm6xp"
         })
 
         context = await browser.new_context()
@@ -47,7 +47,7 @@ async def search_people_free(*args, **kwargs):
 
         await page.set_extra_http_headers(headers)
         # Переход на страницу
-        await page.goto(url, timeout=1200000)
+        await page.goto(url, timeout=120000)
         # Get the HTML code
         html = await page.content()
         soup = BeautifulSoup(html, 'html.parser')
@@ -77,8 +77,8 @@ async def search_people_free(*args, **kwargs):
         return mentions
 
 
-# #
+
+
 # import json
-#
 # d = asyncio.run(search_people_free(first_name='billie', middle_name='', last_name='bones', state='ID', city=''))
 # print(json.dumps(d, indent=4))

@@ -13,7 +13,7 @@ async def usatrace(*args, **kwargs):
     first_name = kwargs["first_name"]
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
-    city = kwargs["city"]
+    city = kwargs["city"].replace(' ', '-')
     state = kwargs["state"]
     cookies = {
         'PHPSESSID': 'eae732f95a69de1cc892cef56d54c7ea',
@@ -40,10 +40,10 @@ async def usatrace(*args, **kwargs):
     }
 
     if not city:
-        url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{state}"
+        url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{state}/"
     else:
-        url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{city}-{state}"
-
+        url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{city}-{state}/"
+    print(url)
     async with aiohttp.ClientSession(cookies=cookies, headers=headers) as session:
         async with session.get(url) as response:
             content = await response.text()
@@ -62,27 +62,28 @@ async def usatrace(*args, **kwargs):
             mentions = []
 
             for tr in all_tr[1::]:  # так как первый tr это шапка таблицы
-                all_td = tr.find_all('td')
-                num = all_td[0].text
-                name = all_td[1].text
-                age = all_td[2].text
-                # lived = all_td[3].text
-                lived = []
-                all_br = all_td[3].find_all('br')
+                try:
+                    all_td = tr.find_all('td')
+                    num = all_td[0].text
+                    name = all_td[1].text
+                    age = all_td[2].text
+                    all_locs = all_td[3]
+                    locations = []
+                    for string in all_locs.stripped_strings:
+                        if ',' in string:
+                            locations.append(string)
 
-                for br in all_br:
-                    place = br.previous_sibling.strip()
-                    lived.append(place)
 
-                mentions.append({'name': name, 'age': age, 'lived': lived})
-
+                    mentions.append({'name': name, 'age': age, 'lived': locations})
+                except Exception as e:
+                    print(f'error in item usatrace')
             return mentions
 
-#
+# #
 # import asyncio
-# async def main():
-#     mentions = await usatrace(first_name='billie', last_name='bones', middle_name='', state='ID', city='')
-#     return mentions
+# # async def main():
+# #     mentions = await usatrace(first_name='john', last_name='smith', middle_name='', state='NY', city='new york')
+# #     return mentions
 #
-# d = asyncio.run(main())
+# d = asyncio.run(usatrace(first_name='john', last_name='smith', middle_name='', state='NY', city='new york'))
 # print(json.dumps(d, indent=4))

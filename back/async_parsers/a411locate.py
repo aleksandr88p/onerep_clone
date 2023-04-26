@@ -62,7 +62,7 @@ async def a411locate(*args, **kwargs):
                     mentions.append({'name': name, 'age': age, 'lived': all_places})
 
                 except Exception as e:
-                    print(f'error in item {e}')
+                    print(f'error in item a411locate')
 
     return mentions
 
