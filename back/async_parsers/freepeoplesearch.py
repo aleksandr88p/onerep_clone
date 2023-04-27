@@ -8,6 +8,8 @@ async def free_people_search(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '_').replace('-', '_')
     state = kwargs['state']
+    proxy = kwargs['proxy']
+
     if state:
         if city:
             url = f'https://freepeoplesearch.com/{last_name}/{first_name}/{state}/{city}/'
@@ -18,10 +20,7 @@ async def free_people_search(*args, **kwargs):
 
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, proxy={
-            "server": "http://196.17.66.143:8000",
-            "username": "",
-            "password": ""})
+        browser = await p.chromium.launch(headless=True, proxy=proxy)
         page = await browser.new_page()
         response = await page.goto(url, timeout=1200000)
         if response.status != 200:
@@ -52,8 +51,8 @@ async def free_people_search(*args, **kwargs):
                     for adr in all_addreses:
                         lived.append(adr.text)
                     mentions.append({'name': name, 'age': age, 'lived': lived})
-                except Exception:
-                    print(f'error in item')
+                except Exception as e:
+                    print(f'error in item freepeoplesearch\n {e}')
 
             return mentions
         await browser.close()

@@ -11,6 +11,8 @@ async def spytox(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     url = f'https://www.spytox.com/{first_name}-{last_name}'
     # print(state)
 

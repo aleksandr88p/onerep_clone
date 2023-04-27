@@ -10,6 +10,8 @@ async def white_pages(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     if state:
         if city:
             url = f'https://www.whitepages.com/name/{first_name}-{last_name}/{city}-{state}'

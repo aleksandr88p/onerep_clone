@@ -10,6 +10,7 @@ async def freepeople_directory(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '-')
     state = kwargs['state']
+    proxy = kwargs['proxy']
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0',
@@ -51,7 +52,7 @@ async def freepeople_directory(*args, **kwargs):
                     mentions.append({'name': name, 'age': age, 'lived': lived})
 
                 except:
-                    print('error in item')
+                    print('error in item freepeople directory')
 
             return mentions
 

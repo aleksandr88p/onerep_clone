@@ -12,6 +12,8 @@ async def privateeye(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '%20')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     cookies = {
         'session': 'eyJkZXZpY2UiOm51bGwsIm5ldHdvcmsiOm51bGwsInB1Ymxpc2hlciI6IlVOS05PV04ifQ.ZBWNpg.wcMekd7dg7SjsRSi7jBI0g_o8sY',
         '_gcl_au': '1.1.1253534278.1679134119',

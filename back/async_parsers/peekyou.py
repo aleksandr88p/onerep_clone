@@ -4,7 +4,7 @@ import json
 from bs4 import BeautifulSoup
 import aiohttp
 import requests
-from helpers import states_dict
+from _helpers import states_dict
 
 async def peekyou(*args, **kwargs):
     first_name = kwargs["first_name"]
@@ -12,6 +12,8 @@ async def peekyou(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = states_dict[kwargs["state"]]
+    proxy = kwargs['proxy']
+
     if state:
         url = f'https://www.peekyou.com/usa/{state}/{first_name}_{last_name}'
     else:

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import aiohttp
 import asyncio
 from playwright.async_api import async_playwright
-from helpers import states_dict
+from _helpers import states_dict
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0',
@@ -26,6 +26,8 @@ async def send_post_request(*args, **kwargs):
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
     city = kwargs["city"]
+    proxy = kwargs['proxy']
+
     # print(kwargs['state'])
     state = states_dict[kwargs["state"]]
     url = 'https://www.spyfly.com/people/api/saveSearch'

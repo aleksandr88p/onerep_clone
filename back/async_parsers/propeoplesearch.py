@@ -10,6 +10,7 @@ async def propeoplesearch(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = kwargs["state"]
+    proxy = kwargs['proxy']
 
     cookies = {
         'XSRF-TOKEN': 'eyJpdiI6IjBJZ0srY2NpMDJPNElUeWs2bHp3aHc9PSIsInZhbHVlIjoiOEtTR0dlWTNHdTgwdzhCT1MvMzZXWGQ3blloN0VuNVhydU03VWZXaUtKOUZ5Sk9kVkVKaDBDTE1qd3hxMWNsRUNCUk1LY1ZwU3JUU3NkK0tEV1VyT3c1bFJ6YTJaSGxueVdxb0hheVhBMWlxWDJtaTBqM2R4YmVrMkxLYmhrb0QiLCJtYWMiOiIwZmVhOTZjZTYzYjFjMTllZTRkYzYxNzY1ZDhmNWZkYWVmMmE0MGY1OGI5ZjUwN2UyZmRiMjFkMzdhNTg3ZWYxIn0%3D',

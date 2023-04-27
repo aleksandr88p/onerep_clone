@@ -41,6 +41,7 @@ async def instant_checkmate(*args, **kwargs):
     last_name = kwargs['last_name'].strip().replace(' ', '%20')
     state = kwargs['state'].strip().replace(' ', '%20')
     city = kwargs['city'].strip().replace(' ', '%20')
+    proxy = kwargs['proxy']
 
 
     params = {
@@ -92,8 +93,8 @@ async def instant_checkmate(*args, **kwargs):
                     lived.append(loc.text.strip())
 
                 mentions.append({'name': name, 'age': age, 'lived': lived})
-            except:
-                print('error in item')
+            except Exception as e:
+                print(f'error in item instant checkmate\n{e}')
 
         await browser.close()
         return mentions

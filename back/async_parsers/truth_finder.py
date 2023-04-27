@@ -10,6 +10,7 @@ async def truth_finder(*args, **kwargs):
     last_name = kwargs['last_name'].strip().replace(' ', '%20')
     state = kwargs['state'].strip().replace(' ', '%20')
     city = kwargs['city'].strip().replace(' ', '%20')
+    proxy = kwargs['proxy']
 
     params = {
         'firstName': f'{first_name}',

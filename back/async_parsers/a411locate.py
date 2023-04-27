@@ -9,6 +9,8 @@ async def a411locate(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
 
     cookies = {
         '_pbjs_userid_consent_data': '3524755945110770',
@@ -62,7 +64,7 @@ async def a411locate(*args, **kwargs):
                     mentions.append({'name': name, 'age': age, 'lived': all_places})
 
                 except Exception as e:
-                    print(f'error in item a411locate')
+                    print(f'error in item a411locate\n{e}')
 
     return mentions
 

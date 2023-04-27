@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import aiohttp
 import asyncio
 from playwright.async_api import async_playwright
-from helpers import states_dict
+from _helpers import states_dict
 
 async def kidslivesafe(*args, **kwargs):
     first_name = kwargs["first_name"]
@@ -14,6 +14,8 @@ async def kidslivesafe(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0',
         'Accept': '*/*',

@@ -16,6 +16,8 @@ async def golookup(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
 
     # без куки ничего не возвращает вообще
     cookies = {

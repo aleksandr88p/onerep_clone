@@ -13,6 +13,7 @@ async def quikpeopletrace(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = kwargs["state"]
+    proxy = kwargs['proxy']
 
 
     cookies = {

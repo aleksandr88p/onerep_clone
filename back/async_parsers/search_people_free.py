@@ -11,14 +11,11 @@ async def search_people_free(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
     url = f"https://searchpeoplefree.com/find/{first_name}-{last_name}/{state}/{city}"
     async with async_playwright() as p:
         # Запуск браузера с указанием прокси
-        browser = await p.chromium.launch(headless=True, proxy={
-            "server": "http://196.17.66.143:8000",
-            "username": "2xxh1Q",
-            "password": "NCm6xp"
-        })
+        browser = await p.chromium.launch(headless=True, proxy=proxy)
 
         context = await browser.new_context()
         page = await context.new_page()

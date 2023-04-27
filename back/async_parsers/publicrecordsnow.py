@@ -14,6 +14,8 @@ async def publicrecordsnow(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '%20')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     cookies = {
         '_gcl_au': '1.1.1114480529.1678919287',
         '_gid': 'GA1.2.2058094499.1678919287',

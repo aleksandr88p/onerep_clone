@@ -9,6 +9,8 @@ async def people_finders(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     if state:
         if city:
             url = f'https://www.peoplefinders.com/people/{first_name}-{last_name}/{state}/{city}'
@@ -17,11 +19,7 @@ async def people_finders(*args, **kwargs):
     else:
         url = f'https://www.peoplefinders.com/people/{first_name}-{last_name}'
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, proxy={
-            "server": "http://196.17.66.143:8000",
-            "username": "",
-            "password": ""
-        })
+        browser = await p.chromium.launch(headless=True, proxy=proxy)
         context = await browser.new_context()
         page = await context.new_page()
         headers = {

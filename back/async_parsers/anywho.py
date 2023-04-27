@@ -12,6 +12,8 @@ async def anywho(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs.get("city", "").strip().replace(" ", "+")
     state = kwargs.get("state", "")
+    proxy = kwargs['proxy']
+
     if state:
         if city:
             url = f'https://www.anywho.com/people/{first_name}+{last_name}/{city}+{state}/'
@@ -71,8 +73,8 @@ async def anywho(*args, **kwargs):
                 lived.append(address)
 
                 mentions.append({'name': name, 'age': age, 'lived': lived})
-            except:
-                print('error in item')
+            except Exception as e:
+                print(f'error in item anywho\n{e}')
         await browser.close()
         return mentions
 

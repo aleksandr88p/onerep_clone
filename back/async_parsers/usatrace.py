@@ -15,6 +15,8 @@ async def usatrace(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     cookies = {
         'PHPSESSID': 'eae732f95a69de1cc892cef56d54c7ea',
         '_ga': 'GA1.2.1179357062.1678837740',
@@ -43,7 +45,7 @@ async def usatrace(*args, **kwargs):
         url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{state}/"
     else:
         url = f"https://www.usatrace.com/people-search/{first_name}-{last_name}/{city}-{state}/"
-    print(url)
+    # print(url)
     async with aiohttp.ClientSession(cookies=cookies, headers=headers) as session:
         async with session.get(url) as response:
             content = await response.text()

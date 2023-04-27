@@ -9,6 +9,7 @@ async def zaba_search(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '+').replace('-', "+")
     state = kwargs["state"]
+    proxy = kwargs['proxy']
 
     if state:
         if city:

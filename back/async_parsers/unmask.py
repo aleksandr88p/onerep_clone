@@ -8,6 +8,8 @@ async def unmask(*args, **kwargs):
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip()
+    proxy = kwargs['proxy']
+
     if len(city.split(' ')) > 1:
         city = kwargs['city'].replace(' ', '_')
     elif len(city.split('-')) > 1:

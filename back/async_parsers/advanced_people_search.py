@@ -8,6 +8,8 @@ async def advanced_people_search(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"]
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
 
     cookies = {
         'session': 'eyJkZXZpY2UiOm51bGwsIm5ldHdvcmsiOm51bGwsInB1Ymxpc2hlciI6IlVOS05PV04ifQ.ZBmrCQ.mCocEG23DKqjX8RozLf47kwIt-c',
@@ -74,7 +76,7 @@ async def advanced_people_search(*args, **kwargs):
                     mentions.append({'name': name, 'age': age, 'lived': lived})
 
             except Exception as e:
-                print(f'error in item   {e}')
+                print(f'error in item advanced people search\n{e}')
 
     return mentions
 

@@ -10,6 +10,8 @@ async def intelius(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs.get("city", "").strip().replace(" ", "-")
     state = kwargs.get("state", "")
+    proxy = kwargs['proxy']
+
     if city == "":
         url = f"https://www.intelius.com/results/?firstName={first_name}&middleInitial={middle_name}&lastName={last_name}&state={state}"
     else:
@@ -57,8 +59,8 @@ async def intelius(*args, **kwargs):
                 except:
                     pass
                 mentions.append({'name': name, 'age': age, 'lived': lived})
-            except:
-                print('error in item')
+            except Exception as e:
+                print(f'error in item intelius {e}')
         await browser.close()
         return mentions
 

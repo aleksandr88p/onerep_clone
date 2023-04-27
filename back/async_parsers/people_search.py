@@ -2,7 +2,7 @@
 
 import aiohttp
 import asyncio
-from helpers import states_dict
+from _helpers import states_dict
 from bs4 import BeautifulSoup
 
 
@@ -13,6 +13,8 @@ async def people_search(*args, **kwargs):
     city = kwargs["city"]
     # state = states_dict[kwargs["state"]]
     state = kwargs['state']
+    proxy = kwargs['proxy']
+
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0',

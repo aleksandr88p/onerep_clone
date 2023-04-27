@@ -12,6 +12,8 @@ async def findpeoplesearch(*args, **kwargs):
     city = kwargs["city"]
     state = kwargs["state"]
     name = f"{first_name} {last_name}"
+    proxy = kwargs['proxy']
+
 
     cookies = {
 

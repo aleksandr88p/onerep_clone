@@ -11,6 +11,7 @@ async def publicinfoservices(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
 
     try:
         async with async_playwright() as p:

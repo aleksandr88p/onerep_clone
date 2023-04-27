@@ -11,6 +11,8 @@ async def information_com(*args, **kwargs):
     if len(city.split(' ')) > 1:
         city = kwargs['city'].replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
 
     if state:
         if city:
@@ -74,7 +76,7 @@ async def information_com(*args, **kwargs):
                 mentions.append({"name": name, "age": age, "lived": lived})
 
         except Exception as e:
-            print(f"error in item   {e}")
+            print(f"error in item information.com\n{e}")
 
         await browser.close()
     return mentions

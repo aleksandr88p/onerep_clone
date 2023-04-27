@@ -12,6 +12,8 @@ async def cyberbackgroundcheck(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     if state:
         if city:
             url = f'https://www.cyberbackgroundchecks.com/people/{first_name}-{last_name}/{state}/{city}'
@@ -38,10 +40,7 @@ async def cyberbackgroundcheck(*args, **kwargs):
     }
     async with async_playwright() as p:
         try:
-            browser = await p.chromium.launch(headless=True, proxy={
-                "server": "http://45.155.201.162:8000",
-                "username": "4UsLX7",
-                "password": "tCDbq9"})
+            browser = await p.chromium.launch(headless=True, proxy=proxy)
 
             context = await browser.new_context()
             page = await context.new_page()
@@ -81,7 +80,7 @@ async def cyberbackgroundcheck(*args, **kwargs):
             await context.close()
             return mentions
         except Exception as e:
-            print('error in cyber')
+            print(f'error in cyber\n{e}')
 
 
 

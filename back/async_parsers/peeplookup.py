@@ -11,6 +11,8 @@ async def peeplookup(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     url = f'https://www.peeplookup.com/{first_name}-{last_name}'
     # print(state)
 
@@ -67,13 +69,7 @@ async def peeplookup(*args, **kwargs):
 
 
 
-
-
-
-
-
-
-d = asyncio.run(peeplookup(first_name='mark', middle_name='', last_name='smith', state='MA', city='new york'))
-
-print(json.dumps(d, indent=4))
-
+# d = asyncio.run(peeplookup(first_name='mark', middle_name='', last_name='smith', state='MA', city='new york'))
+#
+# print(json.dumps(d, indent=4))
+#

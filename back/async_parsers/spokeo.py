@@ -16,6 +16,8 @@ async def spokeo(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
     if state:
         if city:
             url = f"https://www.spokeo.com/{first_name}-{last_name}/{state}/{city}"
@@ -23,7 +25,7 @@ async def spokeo(*args, **kwargs):
             url = f"https://www.spokeo.com/{first_name}-{last_name}/{state}"
     else:
         url = f"https://www.spokeo.com/{first_name}-{last_name}"
-    print(url)
+    # print(url)
 
     cookies = {
         '_sp_ses.6a20': '*',

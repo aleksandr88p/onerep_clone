@@ -2,7 +2,7 @@ import time
 
 import requests
 from bs4 import BeautifulSoup
-from helpers import states_dict
+from _helpers import states_dict
 from playwright.async_api import async_playwright
 
 async def radaris(*args, **kwargs):
@@ -10,6 +10,8 @@ async def radaris(*args, **kwargs):
     middle_name = kwargs["middle_name"]
     last_name = kwargs["last_name"]
     city = kwargs["city"].replace(' ', '+')
+    proxy = kwargs['proxy']
+
     if kwargs['state']:
         state = states_dict[kwargs["state"]]
     else:

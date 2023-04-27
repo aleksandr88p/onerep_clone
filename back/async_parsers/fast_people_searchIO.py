@@ -16,6 +16,7 @@ async def fast_people_IO(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs.get("city", "")
     state = kwargs.get("state", "")
+    proxy = kwargs['proxy']
 
     if state:
         url = f'https://fastpeoplesearch.io/person/{first_name}-{last_name}/{state}'
@@ -24,11 +25,7 @@ async def fast_people_IO(*args, **kwargs):
 
     # print(url) https://fastpeoplesearch.io/person/john-smith/ny  https://fastpeoplesearch.io/person/john-doe/ny
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, proxy={
-            "server": "http://45.145.58.25:8000",
-            "username": "4UsLX7",
-            "password": "tCDbq9"
-        })
+        browser = await p.chromium.launch(headless=True, proxy=proxy)
         context = await browser.new_context(ignore_https_errors=True)
         page = await context.new_page()
         headers = {
@@ -82,8 +79,8 @@ async def fast_people_IO(*args, **kwargs):
                     location = match.group(1)
                     lived.append(location)
                 mentions.append({'name': name, 'age': age, 'lived': lived})
-            except:
-                print('error in item')
+            except Exception as e:
+                print(f'error in item fastpeopleIO\n {e}')
         # time.sleep(60)
 
         return mentions

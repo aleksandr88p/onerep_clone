@@ -12,7 +12,9 @@ async def usphonebook(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
-    url = 'https://www.usphonebook.com/abraham-james/NY/new-york'
+    proxy = kwargs['proxy']
+
+    # url = 'https://www.usphonebook.com/abraham-james/NY/new-york'
     if state:
         if city:
             url = f'https://www.usphonebook.com/{first_name}-{last_name}/{state}/{city}'

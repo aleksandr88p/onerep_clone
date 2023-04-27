@@ -9,6 +9,8 @@ async def people_search_now(*args, **kwargs):
     last_name = kwargs["last_name"]
     city = kwargs["city"].strip().replace(' ', '-')
     state = kwargs["state"]
+    proxy = kwargs['proxy']
+
 
     if state:
         if city:
@@ -20,10 +22,7 @@ async def people_search_now(*args, **kwargs):
 
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, proxy={
-            "server": "http://45.145.58.25:8000",
-            "username": "",
-            "password": ""})
+        browser = await p.chromium.launch(headless=True, proxy=proxy)
 
         headers = {
             'authority': 'www.peoplesearchnow.com',
